@@ -1,0 +1,7 @@
+//importing the routes controller 
+import { login } from "../controller/Auth";
+import { Router } from "express";
+
+const router = Router();
+
+router.post('login',login)
