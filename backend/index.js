@@ -11,11 +11,13 @@ dotenv.config({path:'.env'})
 
 
 //building connection with mongodb
-// mongoose.connect(process.env.URL).then(()=>{
-//     console.log("connection built successfully")
-// }).catch((err)=>{
-//     console.log(`connection failed error occured ${err}`)
-// })
+const URL = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.yrnvjs5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+mongoose.connect(URL).then(()=>{
+    console.log("connection built successfully")
+}).catch((err)=>{
+    console.log(`connection failed error occured ${err}`)
+})
+
 
 
 //middleware 
