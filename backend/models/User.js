@@ -29,7 +29,7 @@ const userSchema = mongoose.Schema({
     },
     post:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:Questions
+        ref:Post
     }],
     answeredPost:[{
         type:mongoose.Schema.Types.ObjectId,
@@ -71,4 +71,4 @@ const userSchema = mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
-export 
+export default User;
