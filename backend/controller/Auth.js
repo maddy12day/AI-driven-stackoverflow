@@ -6,6 +6,7 @@ import dotenv from 'dotenv'
 dotenv.config({path:'.env'})
 import crypto from 'crypto'
 import smtpTransport from 'nodemailer-smtp-transport'
+import SavedOTP from '../models/SaveOTP.js'
 
 
 //login controller
@@ -87,24 +88,64 @@ const transporter = nodemailer.createTransport(smtpTransport({
 // In-memory store for verification PINs (for simplicity)
 const verificationStore = new Map();
 
-export const pinVerification =  async (req, res) => {
+export const pinVerification = async (req, res) => {
     const { email } = req.body;
-    const pin = crypto.randomInt(100000, 999999).toString();
+    const otp = crypto.randomInt(100000, 999999).toString();
 
     // Store the PIN with a timestamp (for expiration handling)
-    verificationStore.set(email, { pin, timestamp: Date.now() });
+    verificationStore.set(email, { otp, timestamp: Date.now() });
 
     const mailOptions = {
         from: process.env.USER_EMAIL,
         to: email,
         subject: 'Email Verification',
-        text: `Your verification PIN is: ${pin}`
+        text: `Your verification PIN is: ${otp}`
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
+    transporter.sendMail(mailOptions, async (error, info) => {
         if (error) {
             return res.status(500).json({ message: 'Error sending email', error });
         }
+
+        // Check if email already exists in the database
+        const emailExist = await SavedOTP.findOne({ email: email });
+
+        if (emailExist) {
+            // Update the existing OTP
+            await SavedOTP.updateOne({ email: email }, { otp: otp, createdAt: new Date() });
+        } else {
+            // Save a new OTP entry
+            const newOTP = new SavedOTP({
+                email: email,
+                otp: otp
+            });
+            await newOTP.save();
+        }
+
         res.status(200).json({ message: 'Verification PIN sent' });
     });
+}
+
+//verify opt
+export const VerifyOTP = async (req, res) => {
+    const { email, otp } = req.body;
+    const userOTP = await SavedOTP.findOne({ email: email });
+
+    if (!userOTP) {
+        return res.status(404).json({ message: "OTP not found or expired", status: false });
+    }
+
+    const currentTime = new Date();
+    const otpTime = new Date(userOTP.createdAt);
+    const timeDiff = (currentTime - otpTime) / 1000 / 60; // Difference in minutes
+
+    if (timeDiff > 5) {
+        return res.status(403).json({ message: "OTP expired", status: false });
+    }
+
+    if (userOTP.otp === otp) {
+        res.status(200).json({ message: "Valid OTP entered", status: true });
+    } else {
+        res.status(403).json({ message: "Invalid OTP entered", status: false });
+    }
 }
