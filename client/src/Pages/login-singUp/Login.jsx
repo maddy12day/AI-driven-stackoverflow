@@ -1,11 +1,37 @@
 import { useState } from 'react';
+import { URL } from '../../utils/constant';
+import { useDispatch } from 'react-redux';
+import { addUserData } from '../../Store/userSlice';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
 
   const handleLogin = (e) => {
     e.preventDefault();
+  };
+
+  const handleButtonClick = async () => {
+    const body = {
+      email: email,
+      password: password
+    };
+  
+    try {
+      const response = await fetch( URL + '/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+  
+      const data = await response.json();
+      dispatch(addUserData(data))
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -33,7 +59,7 @@ const Login = () => {
               className="w-full px-3 py-2 border rounded-md"
             />
           </div>
-          <button type="submit" className="w-full py-2 bg-orange-700 text-white rounded-md hover:bg-orange-500">
+          <button type="submit" className="w-full py-2 bg-orange-700 text-white rounded-md hover:bg-orange-500" onClick={handleButtonClick}>
             Login
           </button>
         </form>
