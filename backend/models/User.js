@@ -29,11 +29,11 @@ const userSchema = mongoose.Schema({
     },
     post:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:Post
+        ref:"Post"
     }],
     answeredPost:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:Answers
+        ref:"Answers"
     }],
     city:{
         type:String,
