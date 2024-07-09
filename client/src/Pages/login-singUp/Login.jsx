@@ -3,12 +3,13 @@ import { URL } from '../../utils/constant';
 import { useDispatch } from 'react-redux';
 import { addUserData } from '../../Store/userSlice';
 import Background from './Background';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const handleLogin = (e) => {
     e.preventDefault();
   };
@@ -30,6 +31,7 @@ const Login = () => {
   
       const data = await response.json();
       dispatch(addUserData(data));
+      navigate('/browse')
     } catch (error) {
       console.error('Error:', error);
     }

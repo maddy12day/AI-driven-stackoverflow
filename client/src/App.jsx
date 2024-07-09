@@ -4,6 +4,8 @@ import Question from './Pages/Body/Question.jsx';
 import Login from './Pages/login-singUp/Login.jsx';
 import { Provider } from 'react-redux';
 import appStore from './Store/appStore.js';
+import ProtectedRoute from './Routes/ProtectedRoute.jsx';
+import Post from './Pages/Body/Post.jsx';
 
 function App() {
   const appRouter = createBrowserRouter([
@@ -12,15 +14,28 @@ function App() {
       element: <Login />,
     },
     {
-      path: '/browse',
-      element: <Body />,
-      children: [
+      element: <ProtectedRoute/>,
+      children : [
         {
-          path: 'questions', 
-          element: <Question />,
-        },
-      ],
-    },
+          path : '/browse',
+          element : <Body/>,
+          children: [
+            {
+              index: true,
+              element: <Question />,
+            },
+            {
+              path: 'questions',
+              element: <Question />,
+            },
+            {
+              path : 'post',
+              element : <Post/>
+            }
+          ],
+        }
+      ]
+    }
   ]);
 
   return (
