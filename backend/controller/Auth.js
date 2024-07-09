@@ -149,3 +149,21 @@ export const VerifyOTP = async (req, res) => {
         res.status(403).json({ message: "Invalid OTP entered", status: false });
     }
 }
+
+//forgot password
+export const forgotPassword = async(req, res)=>{
+    try {
+        const{email,password} = req.body;
+        const user = await User.findOne({email:email});
+        if(!user){
+            res.status(403).json({message:"user not found",status:false})
+        }
+        const hashpwd = await bcrypt.hash(password,10);
+        await user.updateOne({password:hashpwd});
+        res.status(200).json({message:"password updated successfully",status:true})
+    } catch (error) {
+        res.status(500).send(error)
+    }
+    
+
+}
