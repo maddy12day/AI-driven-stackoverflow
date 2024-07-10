@@ -6,12 +6,18 @@ import { Provider } from 'react-redux';
 import appStore from './Store/appStore.js';
 import ProtectedRoute from './Routes/ProtectedRoute.jsx';
 import Post from './Pages/Body/Post.jsx';
+import PublicRoute from './Routes/PublicRoute.jsx';
 
 function App() {
   const appRouter = createBrowserRouter([
     {
-      path: '/',
-      element: <Login />,
+      element : <PublicRoute/>,
+      children : [
+        {
+         path : '/',
+         element : <Login/>
+        }
+      ]
     },
     {
       element: <ProtectedRoute/>,

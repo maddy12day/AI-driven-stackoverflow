@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { URL } from '../../utils/constant';
 import { useDispatch } from 'react-redux';
 import { addUserData } from '../../Store/userSlice';
@@ -31,11 +31,19 @@ const Login = () => {
   
       const data = await response.json();
       dispatch(addUserData(data));
+      sessionStorage.setItem('user', JSON.stringify(data));
       navigate('/browse')
     } catch (error) {
       console.error('Error:', error);
     }
   };
+
+  useEffect(() => {
+    const userData = sessionStorage.getItem('user');
+    if (userData) {
+      dispatch(addUserData(JSON.parse(userData)));
+    }
+  }, [dispatch]);
 
   return (
     <div className="flex h-screen">
