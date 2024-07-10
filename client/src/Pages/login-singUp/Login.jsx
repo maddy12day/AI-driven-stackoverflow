@@ -3,7 +3,7 @@ import { URL } from '../../utils/constant';
 import { useDispatch } from 'react-redux';
 import { addUserData } from '../../Store/userSlice';
 import Background from './Background';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -32,7 +32,7 @@ const Login = () => {
       const data = await response.json();
       dispatch(addUserData(data));
       sessionStorage.setItem('user', JSON.stringify(data));
-      navigate('/browse')
+      navigate('/home')
     } catch (error) {
       console.error('Error:', error);
     }

@@ -4,7 +4,7 @@ const Header = () => {
   return (
     <div>
       <button>
-        <Link to='/browse/post'>Post</Link>
+        <Link to='/home/post'>Forward to post</Link>
       </button>
     </div>
   );
