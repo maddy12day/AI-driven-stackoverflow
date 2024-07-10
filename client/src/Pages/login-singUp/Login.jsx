@@ -31,7 +31,6 @@ const Login = () => {
   
       const data = await response.json();
       dispatch(addUserData(data));
-      sessionStorage.setItem('user', JSON.stringify(data));
       navigate('/home')
     } catch (error) {
       console.error('Error:', error);
