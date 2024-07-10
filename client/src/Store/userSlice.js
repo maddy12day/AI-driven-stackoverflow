@@ -3,16 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 const userSlice = createSlice({
   name : 'user',
   initialState : {
-   userData : null,
    status : false
   },
   reducers : {
     addUserData : (state,action) => {
-      state.userData = action.payload
-      state.status = true
+      state.status = action.payload
     },
     clearUserData : (state) =>{
-      state.userData = null
       state.status = false
     }
   }

@@ -30,7 +30,9 @@ const Login = () => {
       });
   
       const data = await response.json();
-      dispatch(addUserData(data));
+      console.log(data.status);
+      dispatch(addUserData(data.status));
+      sessionStorage.setItem('auth', JSON.stringify(data.status))
       navigate('/home')
     } catch (error) {
       console.error('Error:', error);
@@ -38,11 +40,13 @@ const Login = () => {
   };
 
   useEffect(() => {
-    const userData = sessionStorage.getItem('user');
-    if (userData) {
-      dispatch(addUserData(JSON.parse(userData)));
+    const storedAuth = sessionStorage.getItem('auth');
+    if (storedAuth) {
+      const authData = JSON.parse(storedAuth);
+      dispatch(addUserData(authData));
+      navigate('/home');
     }
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   return (
     <div className="flex h-screen">

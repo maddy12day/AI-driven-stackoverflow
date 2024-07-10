@@ -8,9 +8,9 @@ const ProtectedLayout = ({children,authentication = true}) => {
   const navigate = useNavigate();
   useEffect(()=>{
     if(authentication && authStatus !== authentication){
-        navigate('/');
+        navigate('/',{ replace: true });
     } else if (!authentication && authStatus !== authentication){
-      navigate('/home');
+      navigate('/home',{ replace: true });
     }
   },[authStatus,authentication,navigate])
   return (
