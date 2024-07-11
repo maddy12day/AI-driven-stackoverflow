@@ -1,52 +1,22 @@
-import { useEffect, useState } from 'react';
-import { URL } from '../../utils/constant';
-import { useDispatch } from 'react-redux';
-import { addUserData } from '../../Store/userSlice';
+import { useState } from 'react';
 import Background from './Background';
-import { useNavigate } from 'react-router';
 import Input from '../../components/Input';
+import useLogin from '../../hooks/useLogin';
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const {loginUser} = useLogin();
+
   const handleLogin = (e) => {
     e.preventDefault();
+    console.log('Submit');
   };
 
   const handleButtonClick = async () => {
-    const body = {
-      email: email,
-      password: password
-    };
-  
-    try {
-      const response = await fetch( URL + '/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-      });
-  
-      const data = await response.json();
-      dispatch(addUserData(data.status));
-      sessionStorage.setItem('auth', JSON.stringify(data.status))
-      navigate('/home')
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    loginUser(email,password)
   };
-
-  useEffect(() => {
-    const storedAuth = sessionStorage.getItem('auth');
-    if (storedAuth) {
-      const authData = JSON.parse(storedAuth);
-      dispatch(addUserData(authData));
-      navigate('/home');
-    }
-  }, [dispatch, navigate]);
 
   return (
     <div className="flex h-screen">
