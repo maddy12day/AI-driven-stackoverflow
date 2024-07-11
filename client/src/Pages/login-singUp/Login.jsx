@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Background from './Background';
 import Input from '../../components/Input';
 import useLogin from '../../hooks/useLogin';
+import Button from '../../components/Button';
 
 
 const Login = () => {
@@ -45,13 +46,12 @@ const Login = () => {
                 classname="w-full px-3 py-2 border rounded-md"
               />
             </div>
-            <button
-              type="submit"
-              className="w-full py-2 bg-orange-700 text-white rounded-md hover:bg-orange-500"
+            <Button
+              type='submit'
+              classname="w-full py-2 bg-orange-700 text-white rounded-md hover:bg-orange-500"
               onClick={handleButtonClick}
-            >
-              Login
-            </button>
+              text='Login'
+            />
           </form>
         </div>
       </div>
