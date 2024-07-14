@@ -1,5 +1,5 @@
 import Proptypes from 'prop-types'
-const Input = ({type,value,onChange,classname,name}) => {
+const Input = ({type,value,onChange,classname = "px-3 py-2 border rounded-md",name}) => {
   return (
     <>
       <input

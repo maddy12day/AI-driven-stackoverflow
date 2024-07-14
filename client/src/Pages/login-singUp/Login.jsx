@@ -1,27 +1,26 @@
-import { useState } from 'react';
-import Background from './Background';
-import Input from '../../components/Input';
-import useLogin from '../../hooks/useLogin';
-import Button from '../../components/Button';
-
+import { useState } from "react";
+import Background from "./Background";
+import Input from "../../components/Input";
+import useLogin from "../../hooks/useLogin";
+import Button from "../../components/Button";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const {loginUser} = useLogin();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { loginUser } = useLogin();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log('Submit');
+    console.log("Submit");
   };
 
   const handleButtonClick = async () => {
-    loginUser(email,password)
+    loginUser(email, password);
   };
 
   return (
     <div className="flex h-screen">
-      <Background/>
+      <Background />
       <div className="w-1/2 flex items-center justify-center p-6 bg-gray-100">
         <div className="w-full max-w-lg p-6 bg-white shadow-lg rounded-lg">
           <h2 className="text-2xl font-semibold text-center mb-4">Login</h2>
@@ -29,8 +28,8 @@ const Login = () => {
             <div className="mb-4">
               <label className="block text-gray-700">Email</label>
               <Input
-                name = 'Email'
-                type='email'
+                name="Email"
+                type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 classname="w-full px-3 py-2 border rounded-md"
@@ -47,10 +46,10 @@ const Login = () => {
               />
             </div>
             <Button
-              type='submit'
+              type="submit"
               classname="w-full py-2 bg-orange-700 text-white rounded-md hover:bg-orange-500"
               onClick={handleButtonClick}
-              text='Login'
+              text="Login"
             />
           </form>
         </div>
